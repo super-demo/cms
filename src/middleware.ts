@@ -1,35 +1,22 @@
 import { withAuth } from "next-auth/middleware"
-// import { NextRequest } from "next/server"
 
-export default withAuth(
-  function middleware() {
-    // function middleware(req: NextRequest) {
-    // if (req.nextUrl.pathname === "/") {
-    //   return NextResponse.redirect(new URL("/app", req.url))
-    // }
-    // return NextResponse.next()
-  },
-  {
-    secret: process.env.NEXTAUTH_SECRET,
-    callbacks: {
-      authorized: async ({ token }) => {
-        if (!token) {
-          return false
-        }
+const PATH_ACCESSIBLE = ["/", "/sign"]
 
-        // TODO: Implement session handler instead this
-        if (Date.now() > token.expiresAt * 1000) {
-          return false
-        }
+export default withAuth(function middleware() {}, {
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    authorized: async ({ req, token }) => {
+      if (PATH_ACCESSIBLE.includes(req.nextUrl.pathname)) return true
+      if (!token) return false
+      if (Date.now() > token.expiresAt * 1000) return false
 
-        return true
-      }
-    },
-    pages: {
-      signIn: "/sign"
+      return true
     }
+  },
+  pages: {
+    signIn: "/sign"
   }
-)
+})
 
 // Configure middleware matching paths
 export const config = {

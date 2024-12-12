@@ -1,7 +1,5 @@
 "use client"
 
-import { signOut } from "next-auth/react"
-
 import ContainerLayout from "@/components/layout/container"
 
 export default function Home() {
@@ -12,9 +10,6 @@ export default function Home() {
       <a href="/organization/template/dashboard">
         <p>Go to Dashboard</p>
       </a>
-      <button onClick={() => signOut({ callbackUrl: "/sign" })}>
-        <p>Logout</p>
-      </button>
     </ContainerLayout>
   )
 }
