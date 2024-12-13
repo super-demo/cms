@@ -47,34 +47,12 @@ export default function AuthenticationPage() {
         <div className="flex h-screen w-full items-center justify-center px-4">
           <Card className="mx-auto max-w-sm">
             <CardHeader>
-              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardTitle className="text-2xl">Oops!</CardTitle>
               <CardDescription>
-                Login with your Google account to access the
+                Sorry, this page is not available on mobile devices.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <Button
-                  type="submit"
-                  className="w-full"
-                  onClick={HandleSignWithGoogle}
-                >
-                  Login with Google
-                </Button>
-                <Button variant="outline" className="w-full" asChild>
-                  <Link href="/">Back</Link>
-                </Button>
-              </div>
-              <div className="mt-4 flex justify-center gap-1 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <div
-                  className="cursor-pointer underline"
-                  onClick={HandleSignWithGoogle}
-                >
-                  Sign up
-                </div>
-              </div>
-            </CardContent>
+            <CardContent></CardContent>
           </Card>
         </div>
       </div>
@@ -106,7 +84,9 @@ export default function AuthenticationPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;This application for manage your office.&rdquo;
+                &ldquo; This application simplifies and enhances office
+                management, ensuring smoother operations and better
+                organization.&rdquo;
               </p>
               <footer className="text-sm">NOPNAPATN & THYMS-C.</footer>
             </blockquote>
