@@ -41,7 +41,7 @@ export default function Home() {
             </Link>
             <nav className="hidden space-x-8 md:flex">
               <Link
-                href="#features"
+                href="#"
                 className="text-sm text-gray-600 transition-colors hover:text-gray-900"
               >
                 Features
@@ -125,26 +125,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="bg-gray-900 py-24">
-            <div className="container mx-auto px-4 text-center">
-              <h2 className="mb-6 text-3xl font-light text-white">
-                Ready to{" "}
-                <span className="font-semibold">streamline your office</span>?
-              </h2>
-              <p className="mx-auto mb-10 max-w-2xl text-xl text-gray-400">
-                Start your free trial today and experience the difference
-                OfficeFlow can make in your workplace.
-              </p>
-              <Button
-                size="lg"
-                className="bg-white px-8 py-6 text-lg text-gray-900 hover:bg-gray-100"
-              >
-                Get started
-              </Button>
-            </div>
-          </div>
         </main>
-        <footer className="bg-white py-16">
+        <footer className="bg-white py-8">
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center justify-between md:flex-row">
               <p className="mb-4 text-sm text-gray-600 md:mb-0">
