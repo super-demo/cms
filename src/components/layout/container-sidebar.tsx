@@ -41,7 +41,9 @@ export default function ContainerSidebarLayout(
                       {isLast ? (
                         <BreadcrumbPage>{segment}</BreadcrumbPage>
                       ) : (
-                        <BreadcrumbLink href={href}>{segment}</BreadcrumbLink>
+                        <BreadcrumbLink href={href} className="cursor-pointer">
+                          {segment}
+                        </BreadcrumbLink>
                       )}
                     </BreadcrumbItem>
                     {!isLast && (

@@ -1,22 +1,31 @@
 import { withAuth } from "next-auth/middleware"
+import { NextResponse } from "next/server"
 
 const PATH_ACCESSIBLE = ["/", "/sign"]
 
-export default withAuth(function middleware() {}, {
-  secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    authorized: async ({ req, token }) => {
-      if (PATH_ACCESSIBLE.includes(req.nextUrl.pathname)) return true
-      if (!token) return false
-      if (Date.now() > token.expiresAt * 1000) return false
-
-      return true
+export default withAuth(
+  function middleware(req) {
+    const token = req.nextauth.token
+    if (token && req.nextUrl.pathname === "/") {
+      return NextResponse.redirect(new URL("/organization", req.url))
     }
   },
-  pages: {
-    signIn: "/sign"
+  {
+    secret: process.env.NEXTAUTH_SECRET,
+    callbacks: {
+      authorized: async ({ req, token }) => {
+        if (PATH_ACCESSIBLE.includes(req.nextUrl.pathname)) return true
+        if (!token) return false
+        if (Date.now() > token.expiresAt * 1000) return false
+
+        return true
+      }
+    },
+    pages: {
+      signIn: "/sign"
+    }
   }
-})
+)
 
 // Configure middleware matching paths
 export const config = {

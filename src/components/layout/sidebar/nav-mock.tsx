@@ -1,6 +1,8 @@
 import {
+  AudioWaveform,
   BookOpen,
   Bot,
+  Command,
   Frame,
   LifeBuoy,
   Map,
@@ -11,6 +13,23 @@ import {
 } from "lucide-react"
 
 export const NavMockData = {
+  organization: [
+    {
+      name: "Acme Inc",
+      logo: Command,
+      plan: "Enterprise"
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup"
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free"
+    }
+  ],
   navMain: [
     {
       title: "Playground",

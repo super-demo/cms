@@ -27,6 +27,13 @@ interface NavUserProps {
 export function NavUser(props: NavUserProps) {
   const { isMobile } = useSidebar()
 
+  function GetFirstCapitalLettersAndLastName() {
+    return props.userData.name
+      .split(" ")
+      .map((n) => n.charAt(0))
+      .join("")
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -41,7 +48,9 @@ export function NavUser(props: NavUserProps) {
                   src={props.userData.avatar_url}
                   alt={props.userData.name}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {GetFirstCapitalLettersAndLastName()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
@@ -65,7 +74,9 @@ export function NavUser(props: NavUserProps) {
                     src={props.userData.avatar_url}
                     alt={props.userData.name}
                   />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {GetFirstCapitalLettersAndLastName()}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
