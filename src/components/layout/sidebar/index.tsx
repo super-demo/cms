@@ -10,7 +10,9 @@ import {
   SidebarRail
 } from "@/components/ui/sidebar"
 
-import { UserProfile } from "../../../app/api/user/types"
+import { Organization } from "@/app/api/organization/types"
+import { UserProfile } from "@/app/api/user/types"
+
 import { NavMain } from "./nav-main"
 import { NavMockData } from "./nav-mock"
 import { NavSecondary } from "./nav-secondary"
@@ -20,13 +22,18 @@ import { OrganizationSwitcher } from "./organization-switcher"
 
 interface SidebarLayoutProps extends React.ComponentProps<typeof Sidebar> {
   userData: UserProfile
+  organizationData: Organization[]
 }
 
-export function SidebarLayout({ userData, ...props }: SidebarLayoutProps) {
+export default function SidebarLayout({
+  userData,
+  organizationData,
+  ...props
+}: SidebarLayoutProps) {
   return (
     <Sidebar collapsible="icon" variant="inset" {...props}>
       <SidebarHeader>
-        <OrganizationSwitcher teams={NavMockData.organization} />
+        <OrganizationSwitcher organizationData={organizationData} />
       </SidebarHeader>
       <SidebarContent>
         {/* FYI: This is mock components */}

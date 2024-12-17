@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
   useSidebar
 } from "@/components/ui/sidebar"
+import ShortnameImage from "@/lib/shortname-image"
 
 interface NavUserProps {
   userData: UserProfile
@@ -26,13 +27,6 @@ interface NavUserProps {
 
 export function NavUser(props: NavUserProps) {
   const { isMobile } = useSidebar()
-
-  function GetFirstCapitalLettersAndLastName() {
-    return props.userData.name
-      .split(" ")
-      .map((n) => n.charAt(0))
-      .join("")
-  }
 
   return (
     <SidebarMenu>
@@ -49,7 +43,7 @@ export function NavUser(props: NavUserProps) {
                   alt={props.userData.name}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {GetFirstCapitalLettersAndLastName()}
+                  {ShortnameImage(props.userData.name)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -75,7 +69,7 @@ export function NavUser(props: NavUserProps) {
                     alt={props.userData.name}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {GetFirstCapitalLettersAndLastName()}
+                    {ShortnameImage(props.userData.name)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">

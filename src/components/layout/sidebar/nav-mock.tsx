@@ -1,117 +1,80 @@
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
   Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   Send,
   Settings2,
   SquareTerminal
 } from "lucide-react"
 
 export const NavMockData = {
-  organization: [
-    {
-      name: "Acme Inc",
-      logo: Command,
-      plan: "Enterprise"
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup"
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free"
-    }
-  ],
   navMain: [
     {
-      title: "Playground",
+      title: "Users",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "List Users",
           url: "#"
         },
         {
-          title: "Starred",
+          title: "Roles & Permissions",
           url: "#"
         },
         {
-          title: "Settings",
+          title: "Logs",
           url: "#"
         }
       ]
     },
     {
-      title: "Models",
+      title: "Events",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "List Events",
           url: "#"
         },
         {
-          title: "Explorer",
+          title: "Create Event",
           url: "#"
         },
         {
-          title: "Quantum",
+          title: "Logs",
           url: "#"
         }
       ]
     },
     {
-      title: "Documentation",
+      title: "Reservations",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "List Reservations",
           url: "#"
         },
         {
-          title: "Get Started",
-          url: "#"
-        },
-        {
-          title: "Tutorials",
-          url: "#"
-        },
-        {
-          title: "Changelog",
+          title: "Logs",
           url: "#"
         }
       ]
     },
     {
-      title: "Settings",
+      title: "Leave Requests",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
+          title: "List Requests",
           url: "#"
         },
         {
-          title: "Team",
-          url: "#"
-        },
-        {
-          title: "Billing",
-          url: "#"
-        },
-        {
-          title: "Limits",
+          title: "Logs",
           url: "#"
         }
       ]
@@ -119,19 +82,9 @@ export const NavMockData = {
   ],
   navSecondary: [
     {
-      name: "Design Engineering",
+      name: "Settings",
       url: "#",
       icon: Frame
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map
     }
   ],
   navSupport: [
