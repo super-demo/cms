@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth"
 
 import authOption from "@/app/api/auth/[...nextauth]/auth-option"
-import { GetOrganizationByUserId } from "@/app/api/organization/actions"
+import { GetOrganizationListByUserId } from "@/app/api/organization/actions"
 import { GetUserProfile } from "@/app/api/user/actions"
 import ContainerSidebarLayout from "@/components/layout/container-sidebar"
 import SidebarLayout from "@/components/layout/sidebar"
@@ -17,9 +17,7 @@ export default async function Layout({
     session?.user.jwt.userId as number,
     session?.user.jwt.accessToken as string
   )
-  const [organizationData] = await Promise.all([
-    GetOrganizationByUserId(userData.user_id)
-  ])
+  const [organizationData] = await Promise.all([GetOrganizationListByUserId()])
 
   return (
     <SidebarProvider>

@@ -2,7 +2,8 @@
 
 import { ChevronDown, Plus } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 import { Organization } from "@/app/api/organization/types"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -27,9 +28,23 @@ interface OrganizationSwitcherProps {
 }
 
 export function OrganizationSwitcher(props: OrganizationSwitcherProps) {
-  const [activeOrganization, setActiveOrganization] = useState(
-    props.organizationData[0] || null
-  )
+  const router = useRouter()
+  const pathname = usePathname()
+  const [activeOrganization, setActiveOrganization] =
+    useState<Organization | null>(null)
+
+  useEffect(() => {
+    const organizationName = pathname.split("/")[2]
+    const matchedOrganization = props.organizationData.find(
+      (org) => org.name === organizationName
+    )
+    if (matchedOrganization) setActiveOrganization(matchedOrganization)
+  }, [pathname, props.organizationData])
+
+  function HandleOrganizationChange(organization: Organization) {
+    setActiveOrganization(organization)
+    router.push(`/organization/${organization.name}/dashboard`)
+  }
 
   return (
     <SidebarMenu>
@@ -45,6 +60,13 @@ export function OrganizationSwitcher(props: OrganizationSwitcherProps) {
                   </span>
                   <ChevronDown className="opacity-50" />
                 </>
+              ) : props.organizationData.length > 0 ? (
+                <div className="flex items-center gap-2">
+                  <span className="truncate font-medium text-muted-foreground">
+                    Select Organization
+                  </span>
+                  <ChevronDown className="opacity-50" />
+                </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <Plus className="size-4" />
@@ -61,7 +83,7 @@ export function OrganizationSwitcher(props: OrganizationSwitcherProps) {
             side="bottom"
             sideOffset={4}
           >
-            {props.organizationData.length > 0 ? (
+            {props.organizationData ? (
               <>
                 <DropdownMenuLabel className="text-xs text-muted-foreground">
                   Organization
@@ -69,13 +91,13 @@ export function OrganizationSwitcher(props: OrganizationSwitcherProps) {
                 {props.organizationData.map((organization, index) => (
                   <DropdownMenuItem
                     key={organization.name}
-                    onClick={() => setActiveOrganization(organization)}
+                    onClick={() => HandleOrganizationChange(organization)}
                     className="gap-2 p-2"
                   >
                     <div className="flex size-6 items-center justify-center rounded-sm border">
                       <Avatar className="size-6 rounded-lg">
                         <AvatarImage
-                          src={organization.imageUrl}
+                          src={organization.image_url}
                           alt={organization.name}
                         />
                         <AvatarFallback className="rounded-lg">

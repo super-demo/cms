@@ -1,7 +1,9 @@
 "use client"
 
-import * as React from "react"
+import { ComponentProps } from "react"
 
+import { Organization } from "@/app/api/organization/types"
+import { UserProfile } from "@/app/api/user/types"
 import {
   Sidebar,
   SidebarContent,
@@ -10,9 +12,6 @@ import {
   SidebarRail
 } from "@/components/ui/sidebar"
 
-import { Organization } from "@/app/api/organization/types"
-import { UserProfile } from "@/app/api/user/types"
-
 import { NavMain } from "./nav-main"
 import { NavMockData } from "./nav-mock"
 import { NavSecondary } from "./nav-secondary"
@@ -20,7 +19,7 @@ import { NavSupport } from "./nav-support"
 import { NavUser } from "./nav-user"
 import { OrganizationSwitcher } from "./organization-switcher"
 
-interface SidebarLayoutProps extends React.ComponentProps<typeof Sidebar> {
+interface SidebarLayoutProps extends ComponentProps<typeof Sidebar> {
   userData: UserProfile
   organizationData: Organization[]
 }

@@ -1,13 +1,19 @@
 import { UserProfile } from "@/app/api/user/types"
 
 export interface Organization {
-  organizationId: number
+  organization_id: number
   name: string
   description: string
   url: string
-  imageUrl: string
-  createdAt: string
-  createdBy: UserProfile
-  updatedAt: string
-  updatedBy: UserProfile
+  image_url: string
+  created_at: string
+  created_by: UserProfile
+  updated_at: string
+  updated_by: UserProfile
+}
+
+export interface OrganizationCreate {
+  name: string
+  description: string
+  image_url: string
 }
