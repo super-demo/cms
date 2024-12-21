@@ -1,49 +1,38 @@
 "use client"
 
-import { Command } from "lucide-react"
-import * as React from "react"
+import { ComponentProps } from "react"
 
+import { Organization } from "@/app/api/organization/types"
+import { UserProfile } from "@/app/api/user/types"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail
 } from "@/components/ui/sidebar"
 
-import { UserProfile } from "../../../app/api/user/types"
 import { NavMain } from "./nav-main"
 import { NavMockData } from "./nav-mock"
 import { NavSecondary } from "./nav-secondary"
 import { NavSupport } from "./nav-support"
 import { NavUser } from "./nav-user"
+import { OrganizationSwitcher } from "./organization-switcher"
 
-interface SidebarLayoutProps extends React.ComponentProps<typeof Sidebar> {
+interface SidebarLayoutProps extends ComponentProps<typeof Sidebar> {
   userData: UserProfile
+  organizationData: Organization[]
 }
 
-export function SidebarLayout({ userData, ...props }: SidebarLayoutProps) {
+export default function SidebarLayout({
+  userData,
+  organizationData,
+  ...props
+}: SidebarLayoutProps) {
   return (
     <Sidebar collapsible="icon" variant="inset" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Template Inc.</span>
-                  <span className="truncate text-xs">Enterprise</span>
-                </div>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <OrganizationSwitcher organizationData={organizationData} />
       </SidebarHeader>
       <SidebarContent>
         {/* FYI: This is mock components */}
