@@ -19,16 +19,23 @@ export default function Page() {
   const [formData, setFormData] = useState<OrganizationCreate>({
     name: "",
     description: "",
+    short_description: "",
     image_url: ""
   })
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const FormSchema = z.object({
-    name: z.string().min(1, {
-      message: "Name is required."
-    }),
+    name: z
+      .string()
+      .min(4, {
+        message: "Name must be at least 4 characters long."
+      })
+      .regex(/^[a-zA-Z0-9]+$/, {
+        message: "Name cannot contain special characters or spaces."
+      }),
     description: z.string(),
+    short_description: z.string(),
     image_url: z.string()
   })
 
@@ -70,6 +77,7 @@ export default function Page() {
       const payload = {
         name: formData.name,
         description: formData.description,
+        short_description: formData.short_description,
         image_url: formData.image_url
       }
 
@@ -94,7 +102,7 @@ export default function Page() {
   }
 
   return (
-    <main className="bg-background p-6">
+    <main className="p-6">
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">
           <div className="space-y-1">
@@ -109,7 +117,7 @@ export default function Page() {
           <Separator />
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr,300px]">
-            <div className="space-y-4">
+            <div className="space-y-8">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-base font-medium">
                   Name
@@ -134,7 +142,8 @@ export default function Page() {
 
               <div className="space-y-2">
                 <Label htmlFor="description" className="text-base font-medium">
-                  Description
+                  Description{" "}
+                  <span className="text-sm font-bold">(Optional)</span>
                 </Label>
                 <Textarea
                   id="description"
@@ -147,6 +156,28 @@ export default function Page() {
                 <p className="text-sm text-muted-foreground">
                   A description of your organization. This will be displayed on
                   your profile and in search results.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label
+                  htmlFor="short_description"
+                  className="text-base font-medium"
+                >
+                  Short Description{" "}
+                  <span className="text-sm font-bold">(Optional)</span>
+                </Label>
+                <Input
+                  type="text"
+                  id="short_description"
+                  name="short_description"
+                  value={formData.short_description}
+                  onChange={handleChange}
+                  placeholder="Enter short description"
+                />
+                <p className="text-sm text-muted-foreground">
+                  A short description of your organization. This will be
+                  displayed on your profile and in search results.
                 </p>
               </div>
             </div>

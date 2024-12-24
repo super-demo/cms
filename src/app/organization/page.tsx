@@ -1,11 +1,10 @@
 import { PlusIcon } from "lucide-react"
 import Link from "next/link"
 
+import { GetOrganizationListByUserId } from "@/app/api/organization/actions"
+import OrganizationList from "@/app/organization/_components/list-organization"
 import ContainerLayout from "@/components/layout/container"
-
-import { Button } from "../../components/ui/button"
-import { GetOrganizationListByUserId } from "../api/organization/actions"
-import OrganizationList from "./_components/list-organization"
+import { Button } from "@/components/ui/button"
 
 export default async function OrganizationPage() {
   const [organizationData] = await Promise.all([GetOrganizationListByUserId()])

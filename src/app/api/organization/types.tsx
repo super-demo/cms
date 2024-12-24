@@ -16,5 +16,6 @@ export interface Organization {
 export interface OrganizationCreate {
   name: string
   description: string
+  short_description: string
   image_url: string
 }
