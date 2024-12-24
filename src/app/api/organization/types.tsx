@@ -4,6 +4,7 @@ export interface Organization {
   organization_id: number
   name: string
   description: string
+  short_description: string
   url: string
   image_url: string
   created_at: string

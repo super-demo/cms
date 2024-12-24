@@ -89,6 +89,10 @@ export default function Page() {
     }
   }
 
+  function HandleCancel() {
+    router.push("/organization")
+  }
+
   return (
     <main className="bg-background p-6">
       <form onSubmit={handleSubmit}>
@@ -181,12 +185,10 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex justify-start">
-            <Button
-              type="submit"
-              className="bg-black text-white hover:bg-black/90"
-            >
-              Create
+          <div className="flex justify-start gap-2">
+            <Button type="submit">Create</Button>
+            <Button variant="outline" onClick={HandleCancel}>
+              Cancel
             </Button>
           </div>
         </div>
