@@ -25,10 +25,8 @@ export async function CreateOrganization(
 }
 
 export async function GetOrganizationListByUserId(): Promise<Organization[]> {
-// userId: number
   try {
-    // const response = await FetchInstance(`/organizations/list/${userId}`, {
-    const response = await FetchInstance(`/organizations/list/`, {
+    const response = await FetchInstance(`/organizations/list`, {
       method: "GET"
     })
 
