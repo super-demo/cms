@@ -36,7 +36,7 @@ export const GetUserProfile = async (userId: number, accessToken?: string) => {
 export const GoogleSignIn = async (access_token: string) => {
   try {
     const response = await fetch(
-      `${config.baseUrl}/authentications/cms/sign/google`,
+      `${config.baseUrl}/authentications/sign/google`,
       {
         method: "POST",
         body: JSON.stringify({ access_token }),
