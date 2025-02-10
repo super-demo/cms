@@ -41,7 +41,8 @@ const authOption: NextAuthOptions = {
         user.jwt = {
           accessToken: googleSignInResponse.data.access_token as string,
           expiresAt: googleSignInResponse.data.expires_at as number,
-          userId: userProfile.user_id
+          userId: userProfile.user_id,
+          userLevelId: userProfile.user_level_id
         }
       } catch (error) {
         throw error
@@ -75,7 +76,8 @@ const authOption: NextAuthOptions = {
         jwt: {
           accessToken: token.accessToken,
           expiresAt: token.expiresAt,
-          userId: token.userId
+          userId: token.userId,
+          userLevelId: token.userLevelId
         }
       }
       session.error = token.error

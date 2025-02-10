@@ -1,25 +1,28 @@
 import { User as NextAuthUser } from "next-auth"
 
-import { USERLEVEL } from "@/constants/user-level"
+import { userLevelId } from "@/constants/user-level"
 
 declare module "next-auth" {
   enum UserLevel {
-    SuperAdmin = USERLEVEL.SuperAdmin,
-    Admin = USERLEVEL.Admin,
-    Member = USERLEVEL.Member
+    Root = userLevelId.ROOT,
+    Staff = userLevelId.STAFF,
+    Owner = userLevelId.OWNER,
+    SuperAdmin = userLevelId.SUPERADMIN,
+    Admin = userLevelId.ADMIN,
+    Member = userLevelId.MERBER
   }
 
   interface UserJWT {
     userId: number
-    userLevelId?: UserLevel
+    userLevelId: UserLevel
     accessToken: string
     expiresAt: number
   }
 
   interface User extends NextAuthUser {
     jwt: UserJWT
-    userId?: number
-    userLevelId?: UserLevel
+    userId: number
+    userLevelId: UserLevel
   }
 
   interface Session {
@@ -29,7 +32,7 @@ declare module "next-auth" {
       image: string
       jwt: {
         userId: number
-        userLevelId?: UserLevel
+        userLevelId: UserLevel
         accessToken: string
         expiresAt: number
       }

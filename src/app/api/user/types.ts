@@ -1,5 +1,6 @@
 export interface UserProfile {
   user_id: number
+  user_level_id: number
   google_token: string
   avatar_url: string
   name: string
