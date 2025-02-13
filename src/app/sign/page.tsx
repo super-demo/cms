@@ -1,19 +1,10 @@
-"use client"
-
-import { signIn } from "next-auth/react"
-import Link from "next/link"
+import { SignForm } from "@/app/sign/_components/sign-form"
 
 export default function Page() {
   return (
-    <div>
-      <div>Sign Page</div>
-      <button
-        onClick={async () => await signIn("google", { callbackUrl: "/" })}
-      >
-        Sign
-      </button>
-      <div>
-        <Link href={"/"}>Back to Home</Link>
+    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <SignForm />
       </div>
     </div>
   )

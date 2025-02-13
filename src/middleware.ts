@@ -1,7 +1,7 @@
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server"
 
-const PATH_ACCESSIBLE = ["/", "/sign"]
+const PATH_ACCESSIBLE = ["/sign"]
 
 export default withAuth(
   function middleware(req) {
