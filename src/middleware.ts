@@ -7,7 +7,7 @@ export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token
     if (token && req.nextUrl.pathname === "/") {
-      return NextResponse.redirect(new URL("/home", req.url))
+      return NextResponse.redirect(new URL("/dashboard", req.url))
     }
   },
   {
