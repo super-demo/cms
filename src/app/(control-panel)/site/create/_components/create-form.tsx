@@ -73,7 +73,7 @@ export function CreateForm(props: CreateFormProps) {
 
   const handleSiteTypeChange = (value: string) => {
     if (value === "more") {
-      router.push(path.SITE_TYPE_CREATE)
+      router.push(path.SITE_TYPE)
     } else {
       setFormData((prevData) => ({
         ...prevData,

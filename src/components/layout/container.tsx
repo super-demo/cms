@@ -6,5 +6,5 @@ interface ContainerLayoutProps {
 }
 
 export default function ContainerLayout(props: ContainerLayoutProps) {
-  return <div className={cn("", props.className)}>{props.children}</div>
+  return <div className={cn("p-6", props.className)}>{props.children}</div>
 }
