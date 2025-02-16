@@ -5,11 +5,6 @@ import { path } from "@/constants/path"
 export const NavMockData = {
   navMain: [
     {
-      title: "Dashboard",
-      url: path.DASHBOARD,
-      icon: Frame
-    },
-    {
       title: "Sites",
       url: path.SITE,
       icon: SquareTerminal,

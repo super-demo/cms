@@ -40,6 +40,25 @@ export async function GetListSiteBySiteTypeId(
   }
 }
 
+export async function GetListSiteWithoutSiteTypeId(
+  siteTypeId: number
+): Promise<Site[]> {
+  try {
+    const response = await FetchInstance(`/sites/list/without/${siteTypeId}`, {
+      method: "GET"
+    })
+
+    const result = await response.json()
+
+    if (!response.ok)
+      throw new HttpError(result.status.message, result.status.code)
+
+    return result.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function CreateSite(payload: SiteForm): Promise<SiteForm> {
   try {
     const response = await FetchInstance(`/sites/create`, {

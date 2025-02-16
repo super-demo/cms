@@ -1,11 +1,11 @@
 import { CreateButton } from "@/app/(control-panel)/site/_components/create-button"
 import { ListBlock } from "@/app/(control-panel)/site/_components/list-block"
-import { GetListSiteBySiteTypeId } from "@/app/api/site/actions"
+import { GetListSiteWithoutSiteTypeId } from "@/app/api/site/actions"
 import ContainerLayout from "@/components/layout/container"
 import { Separator } from "@/components/ui/separator"
 
 export default async function Page() {
-  const [siteData] = await Promise.all([GetListSiteBySiteTypeId(1)])
+  const [siteData] = await Promise.all([GetListSiteWithoutSiteTypeId(1)])
 
   return (
     <ContainerLayout>
