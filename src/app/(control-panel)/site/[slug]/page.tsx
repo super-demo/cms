@@ -5,12 +5,13 @@ import { Separator } from "@/components/ui/separator"
 import { CreateForm } from "./_components/create-form"
 import { DetailBlock } from "./_components/detail-block"
 
-interface PageProps {
-  slug: string
-}
-
-export default async function Page({ params }: { params: PageProps }) {
-  const [siteData] = await Promise.all([GetSiteByName(params.slug)])
+export default async function Page({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const slug = (await params).slug
+  const [siteData] = await Promise.all([GetSiteByName(slug)])
 
   return (
     <ContainerLayout>
