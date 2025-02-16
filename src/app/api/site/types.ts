@@ -1,7 +1,8 @@
 import { UserProfile } from "@/app/api/user/types"
 
 export interface Site {
-  organization_id: number
+  site_id: number
+  site_type_id: number
   name: string
   description: string
   short_description: string
@@ -13,7 +14,7 @@ export interface Site {
   updated_by: UserProfile
 }
 
-export interface SiteCreate {
+export interface SiteForm {
   site_type_id: number
   name: string
   description: string

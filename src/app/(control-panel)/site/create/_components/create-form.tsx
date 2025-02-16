@@ -8,7 +8,7 @@ import { z } from "zod"
 
 import { SiteType } from "@/app/api/site-type/types"
 import { CreateSite } from "@/app/api/site/actions"
-import { SiteCreate } from "@/app/api/site/types"
+import { SiteForm } from "@/app/api/site/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,7 +31,7 @@ export function CreateForm(props: CreateFormProps) {
   const router = useRouter()
 
   const [siteTypeData] = useState<SiteType[]>(props.siteTypeData)
-  const [formData, setFormData] = useState<SiteCreate>({
+  const [formData, setFormData] = useState<SiteForm>({
     site_type_id: 1,
     name: "",
     description: "",
