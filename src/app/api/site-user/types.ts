@@ -1,0 +1,16 @@
+export interface SiteUser {
+  site_user_id: number
+  site_id: number
+  user_id: number
+  is_active: boolean
+  created_at: string
+  created_by: number
+  updated_at: string
+  updated_by: number
+  deleted_at: string
+}
+
+export interface CreateSiteUserWithoutSignRequest {
+  site_id: number
+  email: string
+}

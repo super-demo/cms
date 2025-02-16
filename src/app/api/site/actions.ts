@@ -4,6 +4,23 @@ import { Site, SiteForm } from "@/app/api/site/types"
 import FetchInstance from "@/lib/fetch-instance"
 import { HttpError } from "@/lib/http-error"
 
+export async function GetSiteByName(name: string): Promise<Site> {
+  try {
+    const response = await FetchInstance(`/sites/${name}`, {
+      method: "GET"
+    })
+
+    const result = await response.json()
+
+    if (!response.ok)
+      throw new HttpError(result.status.message, result.status.code)
+
+    return result.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function GetListSite(): Promise<Site[]> {
   try {
     const response = await FetchInstance(`/sites/list`, {

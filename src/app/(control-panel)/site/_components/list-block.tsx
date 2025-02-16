@@ -1,6 +1,7 @@
 "use client"
 
 import { Calendar, Globe } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 import type { Site } from "@/app/api/site/types"
@@ -14,12 +15,14 @@ import {
   CardTitle
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { pathWithSlug } from "@/constants/path"
 
 interface ListBlockProps {
   siteData: Site[]
 }
 
 export function ListBlock(props: ListBlockProps) {
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
 
   const filteredSites = props.siteData.filter(
@@ -27,6 +30,10 @@ export function ListBlock(props: ListBlockProps) {
       site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       site.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  const handleLink = (url: string) => {
+    router.push(pathWithSlug.SITE_SLUG(url))
+  }
 
   return (
     <div>
@@ -53,6 +60,7 @@ export function ListBlock(props: ListBlockProps) {
             <Card
               key={site.name}
               className="overflow-hidden transition-all duration-300 hover:shadow-lg"
+              onClick={() => handleLink(site.name)}
             >
               <CardHeader>
                 <CardTitle className="text-xl font-bold">{site.name}</CardTitle>

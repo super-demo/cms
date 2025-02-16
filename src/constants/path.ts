@@ -9,3 +9,7 @@ export const path = {
   USER: "/user",
   USER_LOG: "/user/log"
 }
+
+export const pathWithSlug = {
+  SITE_SLUG: (slug: string) => `${path.SITE}/${slug}`
+}
