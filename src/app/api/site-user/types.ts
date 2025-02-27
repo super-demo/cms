@@ -1,7 +1,22 @@
+import { UserProfile } from "@/app/api/user/types"
+
 export interface SiteUser {
   site_user_id: number
   site_id: number
   user_id: number
+  is_active: boolean
+  created_at: string
+  created_by: number
+  updated_at: string
+  updated_by: number
+  deleted_at: string
+}
+
+export interface SiteUserJoinTable {
+  site_user_id: number
+  site_id: number
+  user_id: number
+  user: UserProfile
   is_active: boolean
   created_at: string
   created_by: number

@@ -5,7 +5,7 @@ import ContainerLayout from "@/components/layout/container"
 import { Separator } from "@/components/ui/separator"
 
 export default async function Page() {
-  const [siteData] = await Promise.all([GetListSiteWithoutSiteTypeId(1)])
+  const [siteData] = await Promise.all([GetListSiteWithoutSiteTypeId(0)])
 
   return (
     <ContainerLayout>
