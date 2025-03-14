@@ -60,7 +60,7 @@ export function ListBlock(props: ListBlockProps) {
             <Card
               key={site.name}
               className="overflow-hidden transition-all duration-300 hover:shadow-lg"
-              onClick={() => handleLink(site.name)}
+              onClick={() => handleLink(site.site_id.toString())}
             >
               <CardHeader>
                 <CardTitle className="text-xl font-bold">{site.name}</CardTitle>
