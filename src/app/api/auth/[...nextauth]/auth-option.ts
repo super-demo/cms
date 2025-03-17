@@ -10,7 +10,15 @@ const authOption: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: config.googleClientId,
-      clientSecret: config.googleClientSecret
+      clientSecret: config.googleClientSecret,
+      authorization: {
+        params: {
+          scope:
+            "openid email profile https://www.googleapis.com/auth/drive.file",
+          prompt: "consent",
+          access_type: "offline"
+        }
+      }
     })
   ],
   callbacks: {

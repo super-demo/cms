@@ -3,12 +3,12 @@
 import { Pencil } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ChangeEvent, FormEvent, useState } from "react"
+import { type ChangeEvent, type FormEvent, useState } from "react"
 import { z } from "zod"
 
-import { SiteType } from "@/app/api/site-type/types"
+import type { SiteType } from "@/app/api/site-type/types"
 import { CreateSite } from "@/app/api/site/actions"
-import { SiteForm } from "@/app/api/site/types"
+import type { SiteForm } from "@/app/api/site/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,6 +27,27 @@ interface CreateFormProps {
   siteTypeData: SiteType[]
 }
 
+// Create a server action for image upload
+async function uploadImage(formData: FormData) {
+  try {
+    // This will be executed on the server where Node.js modules are available
+    const response = await fetch("/api/uploader", {
+      method: "POST",
+      body: formData
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to upload image")
+    }
+
+    const data = await response.json()
+    return data.imageUrl
+  } catch (error) {
+    console.error("Error uploading image:", error)
+    throw error
+  }
+}
+
 export function CreateForm(props: CreateFormProps) {
   const router = useRouter()
 
@@ -40,6 +61,7 @@ export function CreateForm(props: CreateFormProps) {
   })
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [isUploading, setIsUploading] = useState(false)
 
   const FormSchema = z.object({
     site_type_id: z.number().min(1, {
@@ -77,7 +99,7 @@ export function CreateForm(props: CreateFormProps) {
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        site_type_id: parseInt(value)
+        site_type_id: Number.parseInt(value)
       }))
     }
     if (errors.site_type_id) {
@@ -94,15 +116,34 @@ export function CreateForm(props: CreateFormProps) {
       }
       reader.readAsDataURL(file)
 
-      setFormData((prevData) => ({
-        ...prevData,
-        image_url: URL.createObjectURL(file)
-      }))
+      try {
+        setIsUploading(true)
+        const formData = new FormData()
+        formData.append("file", file)
+
+        // Call the server action to upload the image
+        const imageUrl = await uploadImage(formData)
+
+        setFormData((prevData) => ({
+          ...prevData,
+          image_url: imageUrl
+        }))
+      } catch (error) {
+        console.error("Error uploading image:", error)
+      } finally {
+        setIsUploading(false)
+      }
     }
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    // Prevent submission if an image is still uploading
+    if (isUploading) {
+      setErrors({ image_url: "Please wait for image upload to complete" })
+      return
+    }
 
     try {
       FormSchema.parse(formData)
@@ -262,15 +303,21 @@ export function CreateForm(props: CreateFormProps) {
                     height={200}
                     src={
                       imagePreview ||
-                      "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=64&dpr=2&q=64"
+                      "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=64&dpr=2&q=64" ||
+                      "/placeholder.svg"
                     }
                     alt="Profile"
-                    className="h-full w-full bg-muted-foreground/10 object-cover"
+                    className={`h-full w-full bg-muted-foreground/10 object-cover ${isUploading ? "opacity-50" : ""}`}
                   />
+                  {isUploading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+                    </div>
+                  )}
                 </div>
                 <label
                   htmlFor="image-upload"
-                  className="absolute bottom-2 right-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-background shadow-sm hover:bg-accent"
+                  className={`absolute bottom-2 right-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-background shadow-sm ${isUploading ? "cursor-not-allowed opacity-50" : "hover:bg-accent"}`}
                 >
                   <Pencil className="h-4 w-4" />
                   <input
@@ -279,16 +326,26 @@ export function CreateForm(props: CreateFormProps) {
                     className="hidden"
                     accept="image/*"
                     onChange={handleImageChange}
+                    disabled={isUploading}
                   />
                 </label>
               </div>
+              {errors.image_url && (
+                <p className="text-sm text-red-500">{errors.image_url}</p>
+              )}
             </div>
           </div>
         </div>
 
         <div className="flex justify-start gap-2">
-          <Button type="submit">Create</Button>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button type="submit" disabled={isUploading}>
+            {isUploading ? "Uploading..." : "Create"}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isUploading}
+          >
             Cancel
           </Button>
         </div>

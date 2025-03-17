@@ -7,8 +7,6 @@ import { ComponentProps } from "react"
 import { UserProfile } from "@/app/api/user/types"
 import { NavMain } from "@/components/layout/sidebar/nav-main"
 import { NavMockData } from "@/components/layout/sidebar/nav-mock"
-import { NavSecondary } from "@/components/layout/sidebar/nav-secondary"
-import { NavSupport } from "@/components/layout/sidebar/nav-support"
 import { NavUser } from "@/components/layout/sidebar/nav-user"
 import {
   Sidebar,
@@ -48,8 +46,8 @@ export default function SidebarLayout({
         {/* FYI: This is mock components */}
         {/* TODO: Implement with navigation */}
         <NavMain items={NavMockData.navMain} />
-        <NavSecondary items={NavMockData.navSecondary} />
-        <NavSupport items={NavMockData.navSupport} className="mt-auto" />
+        {/* <NavSecondary items={NavMockData.navSecondary} />
+        <NavSupport items={NavMockData.navSupport} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser userData={userData} />
