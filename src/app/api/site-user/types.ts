@@ -26,6 +26,7 @@ export interface SiteUserJoinTable {
 }
 
 export interface CreateSiteUserWithoutSignRequest {
+  user_level_id: number
   site_id: number
   email: string
 }

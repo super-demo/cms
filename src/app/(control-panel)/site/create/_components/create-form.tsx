@@ -67,14 +67,9 @@ export function CreateForm(props: CreateFormProps) {
     site_type_id: z.number().min(1, {
       message: "Please select a site type."
     }),
-    name: z
-      .string()
-      .min(4, {
-        message: "Name must be at least 4 characters long."
-      })
-      .regex(/^[a-zA-Z0-9]+$/, {
-        message: "Name cannot contain special characters or spaces."
-      }),
+    name: z.string().min(4, {
+      message: "Name must be at least 4 characters long."
+    }),
     description: z.string(),
     short_description: z.string(),
     image_url: z.string()

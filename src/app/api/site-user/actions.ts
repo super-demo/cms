@@ -8,8 +8,8 @@ import FetchInstance from "@/lib/fetch-instance"
 import { HttpError } from "@/lib/http-error"
 
 export async function CreateSiteUserWithoutSign(
-  payload: CreateSiteUserWithoutSignRequest
-): Promise<CreateSiteUserWithoutSignRequest> {
+  payload: CreateSiteUserWithoutSignRequest[]
+): Promise<CreateSiteUserWithoutSignRequest[]> {
   try {
     const response = await FetchInstance(`/site-users/create/without/sign`, {
       method: "POST",

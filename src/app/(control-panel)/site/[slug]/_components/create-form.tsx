@@ -1,109 +1,3 @@
-// "use client"
-
-// import { Loader2 } from "lucide-react"
-// import type React from "react"
-// import { useState } from "react"
-
-// import { CreateSiteUserWithoutSign } from "@/app/api/site-user/actions"
-// import { Site } from "@/app/api/site/types"
-// import { Alert, AlertDescription } from "@/components/ui/alert"
-// import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
-
-// interface CreateFormProps {
-//   siteData: Site
-// }
-
-// export function CreateForm(props: CreateFormProps) {
-//   const [email, setEmail] = useState("")
-//   const [isLoading, setIsLoading] = useState(false)
-//   const [error, setError] = useState("")
-//   const [success, setSuccess] = useState(false)
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault()
-//     setIsLoading(true)
-//     setError("")
-//     setSuccess(false)
-
-//     // Email validation
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-//     if (!emailRegex.test(email)) {
-//       setError("Please enter a valid email address")
-//       setIsLoading(false)
-//       return
-//     }
-
-//     try {
-//       // Here you would typically make an API call to add the super admin
-//       // For demonstration, we'll simulate an API call with a timeout
-//       await CreateSiteUserWithoutSign({
-//         site_id: props.siteData.site_id,
-//         email
-//       })
-
-//       // Simulating a successful response
-//       setSuccess(true)
-//       setEmail("")
-//     } catch (err) {
-//       setError("Failed to add super admin. Please try again." + err)
-//     } finally {
-//       setIsLoading(false)
-//     }
-//   }
-
-//   const handleCancel = () => {
-//     setEmail("")
-//     setError("")
-//     setSuccess(false)
-//   }
-
-//   return (
-//     <div>
-//       <form onSubmit={handleSubmit} className="space-y-4">
-//         <div className="space-y-2">
-//           <Label htmlFor="email">Email</Label>
-//           <Input
-//             id="email"
-//             type="email"
-//             placeholder="Enter admin email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//           />
-//         </div>
-//         <div className="flex gap-2">
-//           <Button type="submit" disabled={isLoading}>
-//             {isLoading ? (
-//               <>
-//                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-//                 Adding...
-//               </>
-//             ) : (
-//               "Add Super Admin"
-//             )}
-//           </Button>
-//           <Button variant="outline" onClick={handleCancel}>
-//             Cancel
-//           </Button>
-//         </div>
-//       </form>
-
-//       {error && (
-//         <Alert variant="destructive" className="mt-4">
-//           <AlertDescription>{error}</AlertDescription>
-//         </Alert>
-//       )}
-
-//       {success && (
-//         <Alert className="mt-4">
-//           <AlertDescription>Super admin added successfully!</AlertDescription>
-//         </Alert>
-//       )}
-//     </div>
-//   )
-// }
-
 "use client"
 
 import { Loader2 } from "lucide-react"
@@ -142,10 +36,13 @@ export function CreateForm({ siteData }: CreateFormProps) {
     }
 
     try {
-      await CreateSiteUserWithoutSign({
-        site_id: siteData.site_id,
-        email
-      })
+      await CreateSiteUserWithoutSign([
+        {
+          user_level_id: 4,
+          site_id: siteData.site_id,
+          email
+        }
+      ])
       setSuccess(true)
       setEmail("")
     } catch (err) {
@@ -164,7 +61,7 @@ export function CreateForm({ siteData }: CreateFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Add New User</CardTitle>
+        <CardTitle>Add New User (Admin)</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
