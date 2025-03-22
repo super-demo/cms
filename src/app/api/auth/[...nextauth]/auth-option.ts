@@ -50,7 +50,8 @@ const authOption: NextAuthOptions = {
           accessToken: googleSignInResponse.data.access_token as string,
           expiresAt: googleSignInResponse.data.expires_at as number,
           userId: userProfile.user_id,
-          userLevelId: userProfile.user_level_id
+          userLevelId: userProfile.user_level_id,
+          googleSignInToken: account.access_token as string
         }
       } catch (error) {
         throw error
@@ -65,6 +66,7 @@ const authOption: NextAuthOptions = {
           userLevelId: user.jwt.userLevelId,
           accessToken: user.jwt.accessToken,
           expiresAt: user.jwt.expiresAt,
+          googleSignInToken: user.jwt.googleSignInToken,
           user
         }
       }
@@ -85,7 +87,8 @@ const authOption: NextAuthOptions = {
           accessToken: token.accessToken,
           expiresAt: token.expiresAt,
           userId: token.userId,
-          userLevelId: token.userLevelId
+          userLevelId: token.userLevelId,
+          googleSignInToken: token.googleSignInToken
         }
       }
       session.error = token.error

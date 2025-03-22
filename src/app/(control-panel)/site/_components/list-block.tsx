@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, Globe } from "lucide-react"
+import { Calendar } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -36,21 +36,32 @@ export function ListBlock(props: ListBlockProps) {
   }
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="mb-4 text-2xl font-bold">Site</h1>
-        <Input
-          type="text"
-          placeholder="Search sites by name or description..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-md"
-        />
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <h1 className="text-3xl font-bold tracking-tight">Sites</h1>
+        <div className="relative max-w-md">
+          <Input
+            type="text"
+            placeholder="Search sites by name or description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-background pr-10 focus-visible:ring-gray-500"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              aria-label="Clear search"
+            >
+              ×
+            </button>
+          )}
+        </div>
       </div>
 
       {filteredSites.length === 0 ? (
-        <div className="mt-8 text-center">
-          <p className="text-gray-500">
+        <div className="rounded-lg border border-dashed p-8 text-center">
+          <p className="text-muted-foreground">
             No sites found matching your search criteria.
           </p>
         </div>
@@ -59,36 +70,31 @@ export function ListBlock(props: ListBlockProps) {
           {filteredSites.map((site) => (
             <Card
               key={site.name}
-              className="overflow-hidden transition-all duration-300 hover:shadow-lg"
+              className="group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-md"
               onClick={() => handleLink(site.site_id.toString())}
             >
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">{site.name}</CardTitle>
-                <CardDescription className="text-sm text-gray-600">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl font-bold group-hover:underline">
+                  {site.name}
+                </CardTitle>
+                <CardDescription className="text-sm text-muted-foreground">
                   {site.short_description}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="mb-4 text-sm text-gray-600">{site.description}</p>
-                <div className="flex items-center space-x-2">
-                  <Globe className="h-4 w-4 text-blue-500" />
-                  <a
-                    href={site.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Visit Site
-                  </a>
-                </div>
+                <p className="line-clamp-3 text-sm text-muted-foreground">
+                  {site.description}
+                </p>
               </CardContent>
-              <CardFooter className="">
+              <CardFooter className="border-t pt-4">
                 <div className="flex w-full flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center">
-                    <Calendar className="mr-1 h-4 w-4" />
-                    Created: {new Date(site.created_at).toLocaleDateString()}
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <Calendar className="mr-1 h-3.5 w-3.5" />
+                    <span>
+                      {new Date(site.created_at).toLocaleDateString()}
+                    </span>
                   </div>
-                  <Badge variant="outline" className="bg-white">
+                  <Badge variant="outline" className="text-xs font-normal">
                     Updated: {new Date(site.updated_at).toLocaleDateString()}
                   </Badge>
                 </div>

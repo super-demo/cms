@@ -1,4 +1,4 @@
-import { Bot, Frame, LifeBuoy, Send, SquareTerminal } from "lucide-react"
+import { Frame, LifeBuoy, Send, SquareTerminal } from "lucide-react"
 
 import { path } from "@/constants/path"
 
@@ -21,17 +21,6 @@ export const NavMockData = {
         {
           title: "Logs",
           url: path.SITE_LOG
-        }
-      ]
-    },
-    {
-      title: "Users",
-      url: path.USER,
-      icon: Bot,
-      items: [
-        {
-          title: "Logs",
-          url: "#"
         }
       ]
     }

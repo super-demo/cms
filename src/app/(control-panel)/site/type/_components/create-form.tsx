@@ -1,14 +1,25 @@
 "use client"
 
-import { Loader2, Plus } from "lucide-react"
-import React, { useState } from "react"
+import { AlertCircle, CheckCircle, Loader2, Plus, Tag } from "lucide-react"
+import { useRouter } from "next/navigation"
+import type React from "react"
+import { useState } from "react"
 
 import { CreateSiteType } from "@/app/api/site-type/actions"
-import { SiteType } from "@/app/api/site-type/types"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import type { SiteType } from "@/app/api/site-type/types"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
 
 interface CreateFormProps {
@@ -32,17 +43,16 @@ const validateType = (type: string, existingTypes: string[]) => {
   return null
 }
 
-export default function CreateForm({
-  siteTypeData,
-  onSuccess
-}: CreateFormProps) {
+export default function CreateForm({ siteTypeData }: CreateFormProps) {
+  const router = useRouter()
   const [types, setTypes] = useState(
-    siteTypeData.map((siteType) => siteType.slug)
+    siteTypeData.map((siteType) => siteType.slug.toLowerCase())
   )
   const [newType, setNewType] = useState("")
   const [description, setDescription] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState(false)
 
   const handleAddType = async () => {
     const validationError = validateType(newType, types)
@@ -53,25 +63,30 @@ export default function CreateForm({
 
     setIsLoading(true)
     setError("")
+    setSuccess(false)
 
     try {
       const newSiteType = {
-        slug: newType,
-        description: description
+        slug: newType.trim(),
+        description: description.trim()
       }
       await CreateSiteType(newSiteType)
-      setTypes([...types, newType])
-      setNewType("")
-      setDescription("")
+      setTypes([...types, newType.toLowerCase()])
+      setSuccess(true)
+
       toast({
         title: "Success",
-        description: "Type created successfully",
-        duration: 1000
+        description: `Type "${newType}" created successfully`,
+        duration: 3000
       })
-      onSuccess?.()
+
+      // Reset form after successful creation
       setTimeout(() => {
-        window.location.reload()
-      }, 1000)
+        setNewType("")
+        setDescription("")
+        setSuccess(false)
+        router.refresh()
+      }, 1500)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
       toast({
@@ -86,7 +101,8 @@ export default function CreateForm({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !isLoading) {
+    if (e.key === "Enter" && !e.shiftKey && !isLoading) {
+      e.preventDefault()
       handleAddType()
     }
   }
@@ -95,84 +111,135 @@ export default function CreateForm({
     setNewType("")
     setDescription("")
     setError("")
+    setSuccess(false)
   }
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="flex space-x-4">
-          <div className="flex w-1/2 flex-col space-y-2">
+    <Card className="border-2">
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <Tag className="h-5 w-5" />
+          <CardTitle>Create New Site Type</CardTitle>
+        </div>
+        <CardDescription>
+          Add a new type to categorize your sites
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-2">
             <Label htmlFor="type" className="text-base font-medium">
-              Type
+              Type Name <span className="text-destructive">*</span>
             </Label>
-            <Input
-              id="type"
-              value={newType}
-              onChange={(e) => {
-                setNewType(e.target.value)
-                setError("")
-              }}
-              onKeyDown={handleKeyPress}
-              placeholder="Enter type name"
-              className="w-full"
-              disabled={isLoading}
-            />
+            <div className="relative">
+              <Input
+                id="type"
+                value={newType}
+                onChange={(e) => {
+                  setNewType(e.target.value)
+                  setError("")
+                }}
+                onKeyDown={handleKeyPress}
+                placeholder="e.g., blog, e-commerce, portfolio"
+                className="pr-10"
+                disabled={isLoading}
+              />
+              {newType && (
+                <button
+                  type="button"
+                  onClick={() => setNewType("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  aria-label="Clear type"
+                  tabIndex={-1}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Must be at least 3 characters and contain only letters, numbers,
+              and hyphens
+            </p>
           </div>
 
-          <div className="flex w-1/2 flex-col space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="description" className="text-base font-medium">
-              Description <span className="text-sm font-bold">(Optional)</span>
+              Description{" "}
+              <span className="text-xs text-muted-foreground">(Optional)</span>
             </Label>
-            <Input
+            <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description (optional)"
-              className="w-full"
+              placeholder="Describe the purpose of this site type"
+              className="min-h-[80px] resize-none"
               disabled={isLoading}
             />
           </div>
         </div>
 
-        <div className="flex space-x-2">
-          <Button onClick={handleAddType} className="flex items-center">
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Plus className="mr-2 h-4 w-4" />
-            )}
-            Add Type
-          </Button>
-          <Button
-            variant="outline"
-            disabled={isLoading}
-            onClick={() => handleCancel()}
-            className="flex items-center"
-          >
-            Cancel
-          </Button>
-        </div>
-      </div>
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+        {success && (
+          <Alert className="border-green-200 bg-green-50 text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-300">
+            <CheckCircle className="h-4 w-4" />
+            <AlertTitle>Success</AlertTitle>
+            <AlertDescription>
+              Site type {newType} has been created successfully.
+            </AlertDescription>
+          </Alert>
+        )}
 
-      <div className="mt-4">
-        <h3 className="mb-2 text-sm font-medium">Existing Types:</h3>
-        <div className="flex flex-wrap gap-2">
-          {types.map((type) => (
-            <div
-              key={type}
-              className="rounded-md bg-secondary px-3 py-1 text-sm text-secondary-foreground"
-            >
-              {type}
+        <div className="rounded-md bg-muted p-4">
+          <h3 className="mb-2 font-medium">Existing Types</h3>
+          {types.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {types.map((type) => (
+                <div
+                  key={type}
+                  className="rounded-md bg-background px-3 py-1 text-sm font-medium shadow-sm ring-1 ring-inset ring-muted-foreground/20"
+                >
+                  {type}
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              No types created yet
+            </p>
+          )}
         </div>
-      </div>
-    </div>
+      </CardContent>
+
+      <CardFooter className="flex justify-end gap-2 border-t px-6 py-4">
+        <Button variant="outline" disabled={isLoading} onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button
+          onClick={handleAddType}
+          disabled={isLoading || !newType.trim()}
+          className="min-w-[120px]"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            <>
+              <Plus className="mr-2 h-4 w-4" />
+              Create Type
+            </>
+          )}
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }

@@ -1,104 +1,7 @@
-// "use client"
-
-// import { Calendar, Globe, ImageIcon } from "lucide-react"
-
-// import type { Site } from "@/app/api/site/types"
-// import { Badge } from "@/components/ui/badge"
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle
-// } from "@/components/ui/card"
-// import { Separator } from "@/components/ui/separator"
-
-// interface SiteDetailProps {
-//   site: Site
-// }
-
-// export function DetailBlock({ site }: SiteDetailProps) {
-//   return (
-//     <div>
-//       <Card>
-//         <CardHeader>
-//           <div className="flex items-start justify-between gap-3">
-//             <div>
-//               <CardTitle className="text-2xl font-bold">
-//                 <div className="flex items-center gap-2">
-//                   {site.name} <Badge>ID: {site.site_id}</Badge>
-//                 </div>
-//               </CardTitle>
-//               <CardDescription>{site.short_description}</CardDescription>
-//             </div>
-//           </div>
-//         </CardHeader>
-//         <CardContent className="space-y-6">
-//           <section>
-//             <h2 className="mb-2 text-xl font-semibold">Description</h2>
-//             <p className="text-muted-foreground">{site.description}</p>
-//           </section>
-
-//           <Separator />
-
-//           <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-//             <div>
-//               <div className="mb-2 flex items-center gap-3">
-//                 <h2 className="text-lg font-semibold">Site Details</h2>
-//                 <Badge variant="outline">Type ID: {site.site_type_id}</Badge>
-//               </div>
-//               <ul className="space-y-2">
-//                 <li className="flex items-center space-x-2">
-//                   <Globe className="h-4 w-4" />
-//                   <a
-//                     href={site.url}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="text-primary hover:underline"
-//                   >
-//                     Visit Site
-//                   </a>
-//                 </li>
-//                 <li className="flex items-center space-x-2">
-//                   <ImageIcon className="h-4 w-4" />
-//                   <a
-//                     href={site.image_url}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="text-primary hover:underline"
-//                   >
-//                     View Image
-//                   </a>
-//                 </li>
-//               </ul>
-//             </div>
-//             <div>
-//               <h2 className="mb-2 text-lg font-semibold">Timeline</h2>
-//               <ul className="space-y-2 text-sm text-muted-foreground">
-//                 <li className="flex items-center space-x-2">
-//                   <Calendar className="h-4 w-4" />
-//                   <span>
-//                     Created: {new Date(site.created_at).toLocaleString()}
-//                   </span>
-//                 </li>
-//                 <li className="flex items-center space-x-2">
-//                   <Calendar className="h-4 w-4" />
-//                   <span>
-//                     Updated: {new Date(site.updated_at).toLocaleString()}
-//                   </span>
-//                 </li>
-//               </ul>
-//             </div>
-//           </section>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   )
-// }
-
 "use client"
 
-import { Calendar, Globe, ImageIcon } from "lucide-react"
+import { Calendar, Globe, ImageIcon, User } from "lucide-react"
+import Image from "next/image"
 
 import type { Site } from "@/app/api/site/types"
 import { Badge } from "@/components/ui/badge"
@@ -117,70 +20,112 @@ interface SiteDetailProps {
 
 export function DetailBlock({ site }: SiteDetailProps) {
   return (
-    <Card>
+    <Card className="overflow-hidden border-2">
+      {site.image_url && (
+        <div className="relative h-48 w-full overflow-hidden bg-muted">
+          <Image
+            src={site.image_url || "/placeholder.svg"}
+            alt={`${site.name} thumbnail`}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            onError={(e) => {
+              e.currentTarget.style.display = "none"
+            }}
+          />
+        </div>
+      )}
       <CardHeader>
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <CardTitle className="text-2xl font-bold">
-              {site.name} <Badge className="ml-2">ID: {site.site_id}</Badge>
-            </CardTitle>
-            <CardDescription>{site.short_description}</CardDescription>
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-2xl font-bold tracking-tight">
+                {site.name}
+              </CardTitle>
+              <Badge variant="outline" className="font-mono text-xs">
+                ID: {site.site_id}
+              </Badge>
+            </div>
+            <CardDescription className="mt-1 text-base">
+              {site.short_description}
+            </CardDescription>
           </div>
+          <Badge variant="secondary" className="w-fit shrink-0">
+            Type: {site.site_type_id}
+          </Badge>
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8">
         <section>
-          <h2 className="mb-2 text-xl font-semibold">Description</h2>
-          <p className="text-muted-foreground">{site.description}</p>
+          <h2 className="mb-3 text-xl font-semibold tracking-tight">
+            Description
+          </h2>
+          <div className="rounded-md bg-muted/40 p-4 text-muted-foreground">
+            <p>{site.description}</p>
+          </div>
         </section>
-        <Separator />
-        <div className="grid gap-6 md:grid-cols-2">
+
+        <Separator className="my-6" />
+
+        <div className="grid gap-8 md:grid-cols-2">
           <section>
-            <h2 className="mb-2 text-lg font-semibold">Site Details</h2>
-            <Badge variant="outline" className="mb-2">
-              Type ID: {site.site_type_id}
-            </Badge>
-            <ul className="space-y-2">
-              <li className="flex items-center space-x-2">
-                <Globe className="h-4 w-4" />
+            <h2 className="mb-3 text-lg font-semibold tracking-tight">Links</h2>
+            <ul className="space-y-3 rounded-md border p-4">
+              <li className="group flex items-center space-x-3">
+                <Globe className="h-5 w-5 text-muted-foreground" />
                 <a
                   href={site.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline"
+                  className="text-foreground transition-all hover:font-medium hover:underline"
                 >
-                  Visit Site
+                  Visit Website
                 </a>
               </li>
-              <li className="flex items-center space-x-2">
-                <ImageIcon className="h-4 w-4" />
-                <a
-                  href={site.image_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  View Image
-                </a>
-              </li>
+              {site.image_url && (
+                <li className="group flex items-center space-x-3">
+                  <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                  <a
+                    href={site.image_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground transition-all hover:font-medium hover:underline"
+                  >
+                    View Full Image
+                  </a>
+                </li>
+              )}
             </ul>
           </section>
+
           <section>
-            <h2 className="mb-2 text-lg font-semibold">Timeline</h2>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center space-x-2">
-                <Calendar className="h-4 w-4" />
-                <span>
-                  Created: {new Date(site.created_at).toLocaleString()}
-                </span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Calendar className="h-4 w-4" />
-                <span>
-                  Updated: {new Date(site.updated_at).toLocaleString()}
-                </span>
-              </li>
-            </ul>
+            <h2 className="mb-3 text-lg font-semibold tracking-tight">
+              Timeline
+            </h2>
+            <div className="space-y-4 rounded-md border p-4">
+              <div className="flex items-start gap-3">
+                <User className="mt-0.5 h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="font-medium">Created by</p>
+                  <p className="text-sm text-muted-foreground">
+                    {site.created_by?.name || "Unknown"} on{" "}
+                    {new Date(site.created_at).toLocaleDateString()} at{" "}
+                    {new Date(site.created_at).toLocaleTimeString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Calendar className="mt-0.5 h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="font-medium">Last updated</p>
+                  <p className="text-sm text-muted-foreground">
+                    {site.updated_by?.name || "Unknown"} on{" "}
+                    {new Date(site.updated_at).toLocaleDateString()} at{" "}
+                    {new Date(site.updated_at).toLocaleTimeString()}
+                  </p>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
       </CardContent>

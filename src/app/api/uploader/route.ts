@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-    const accessToken = config.googleTokenUrl
+    const accessToken = session.user.jwt.googleSignInToken
 
     // Step 1: Create a file on Drive & get fileId
     const metadataResponse = await fetch(

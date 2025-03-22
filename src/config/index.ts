@@ -1,7 +1,6 @@
 const config = {
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001",
   isProduction: process.env.NEXT_PUBLIC_APP_ENV === "production",
-  googleTokenUrl: process.env.GOOGLE_TOKEN_URL as string,
   googleClientId: process.env.GOOGLE_CLIENT_ID as string,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
   googleDriveFolderId: process.env.GOOGLE_DRIVE_FOLDER_ID || "",

@@ -3,6 +3,7 @@ import { ListForm } from "@/app/(control-panel)/site/type/_components/list-form"
 import { GetListSiteType } from "@/app/api/site-type/actions"
 import ContainerLayout from "@/components/layout/container"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default async function Page() {
   const [siteTypeData] = await Promise.all([GetListSiteType()])
@@ -10,22 +11,28 @@ export default async function Page() {
   return (
     <ContainerLayout>
       <div className="space-y-6">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Site of Type
-          </h1>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Site Types</h1>
           <p className="text-muted-foreground">
-            Site of Type is a collection of sites that share the same type.
+            Manage the different types of sites in your system
           </p>
         </div>
         <Separator />
-        <div className="space-y-1">
-          <CreateForm siteTypeData={siteTypeData} />
-        </div>
-        <Separator />
-        <div className="space-y-1">
-          <ListForm siteTypeData={siteTypeData} />
-        </div>
+
+        <Tabs defaultValue="list" className="w-full">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="list">View Types</TabsTrigger>
+            <TabsTrigger value="create">Create Type</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="list" className="space-y-4 pt-4">
+            <ListForm siteTypeData={siteTypeData} />
+          </TabsContent>
+
+          <TabsContent value="create" className="space-y-4 pt-4">
+            <CreateForm siteTypeData={siteTypeData} />
+          </TabsContent>
+        </Tabs>
       </div>
     </ContainerLayout>
   )
