@@ -82,9 +82,9 @@ export function CreateForm({
     try {
       await CreateSiteUserWithoutSign([
         {
-          user_level_id: Number.parseInt(role),
           site_id: siteData.site_id,
-          email
+          email,
+          site_user_level_id: Number.parseInt(role)
         }
       ])
 
@@ -97,6 +97,8 @@ export function CreateForm({
       })
 
       router.refresh()
+      window.location.reload()
+
       if (onSuccess) onSuccess()
     } catch (err) {
       setError(
@@ -168,15 +170,15 @@ export function CreateForm({
               <SelectValue placeholder="Select a role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="2">Admin</SelectItem>
-              <SelectItem value="3">Editor</SelectItem>
-              <SelectItem value="4">Viewer</SelectItem>
+              <SelectItem value="3">Super Admin</SelectItem>
+              <SelectItem value="4">Admin</SelectItem>
+              <SelectItem value="5">Viewer</SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            {role === "2"
+            {role === "3"
               ? "Full access to manage site and users"
-              : role === "3"
+              : role === "4"
                 ? "Can edit content but not manage users"
                 : "View-only access to site content"}
           </p>
@@ -280,5 +282,3 @@ export function CreateForm({
     </Card>
   )
 }
-
-// Add this component to make the component work
