@@ -53,7 +53,7 @@ export function CreateForm(props: CreateFormProps) {
 
   const [siteTypeData] = useState<SiteType[]>(props.siteTypeData)
   const [formData, setFormData] = useState<SiteForm>({
-    site_type_id: 1,
+    site_type_id: 2,
     name: "",
     description: "",
     short_description: "",
@@ -220,14 +220,16 @@ export function CreateForm(props: CreateFormProps) {
                   <SelectValue placeholder="Select Site Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {siteTypeData.map((type) => (
-                    <SelectItem
-                      key={type.site_type_id}
-                      value={type.site_type_id.toString()}
-                    >
-                      {type.slug}
-                    </SelectItem>
-                  ))}
+                  {siteTypeData
+                    .filter((type) => type.site_type_id !== 1)
+                    .map((type) => (
+                      <SelectItem
+                        key={type.site_type_id}
+                        value={type.site_type_id.toString()}
+                      >
+                        {type.slug}
+                      </SelectItem>
+                    ))}
 
                   <SelectItem value="more" className="font-semibold">
                     + Add Site Type
